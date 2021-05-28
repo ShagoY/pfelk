@@ -1,0 +1,37 @@
+#!/bin/sh
+# pfELK Firewall rules description auto install after update core
+
+# Color Codes 
+normal=`echo "\033[0;0m"`
+blwhite=`echo "\033[0;01m"`
+blue=`echo "\033[0;36m"` #Blue
+yellow=`echo "\033[0;33m"` #yellow
+red=`echo "\033[0;31m"`
+green=`echo "\033[0;32m"`  # Green
+
+auto-sync(){
+	FILE=/usr/local/opnsense/scripts/pfelk/pfelk_rule_sync.sh
+	FILE2=/usr/local/opnsense/service/conf/actions.d/actions_filter.conf.bak
+	# Check and install the script pfelk_rule_sync.sh
+	if test -f "$FILE"; then
+		echo -e "${yellow}pfelk_rule_sync.sh${normal} exists."
+	else 
+		echo -e "${yellow}pfelk_rule_sync.sh${normal} does not exist."
+		echo -e "Downloading the ${yellow}pfelk_rule_sync.sh${normal} script..."
+		curl --create-dirs https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/scripts/pfelk_rule_sync.sh -o /usr/local/opnsense/scripts/pfelk/pfelk_rule_sync.sh
+		echo -e "The file ${yellow}/usr/local/opnsense/scripts/pfelk/pfelk_rule_sync.sh${normal} has been ${blue}created${normal}"
+		chmod +x /usr/local/opnsense/scripts/pfelk/pfelk_rule_sync.sh
+	fi
+	# Updated file actions_filter.conf to start the script when modifying firewall rules
+	echo -e "Backup from the original file ${yellow}actions_filter.conf${normal} to ${yellow}actions_filter.conf.bak${normal}"
+	cp /usr/local/opnsense/service/conf/actions.d/actions_filter.conf /usr/local/opnsense/service/conf/actions.d/actions_filter.conf.bak
+	echo -e "Updated file ${yellow}actions_filter.conf${normal} to integrate the pfELK script"
+	sed -i '' 's/command:\/usr\/local\/etc\/rc\.filter_configure.*/command:\/usr\/local\/etc\/rc\.filter_configure;\/usr\/local\/opnsense\/scripts\/pfelk\/pfelk_rule_sync.sh/' /usr/local/opnsense/service/conf/actions.d/actions_filter.conf
+	echo -e "Restart the ${yellow}configd service${normal}"
+	service configd restart
+	echo -e "Start the ${yellow}OPNSense filter service${normal}"
+	configctl filter reload
+	echo -e "You will now see the message ${yellow}\"Reloading filter\"${normal} in the OPNsense log view here ${blue}System > Log Files > Backend${normal}"
+}
+
+auto-sync
