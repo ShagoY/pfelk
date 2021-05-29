@@ -60,24 +60,18 @@ pfelk_sync(){
 }
 
 pfelk_update(){
-	FILE=/usr/local/opnsense/scripts/pfelk/pfelk_rule_sync.sh
-	FILE2=/usr/local/opnsense/service/conf/actions.d/actions_filter.conf
-	# Update the pfelk_rule_sync.sh script
-	echo -e "Downloading the ${yellow}pfelk_rule_sync.sh${normal} script..."
-	# curl --create-dirs https://raw.githubusercontent.com/ShagoY/pfelk/master/etc/pfelk/scripts/pfelk_rule_sync.sh -o $FILE
-	echo -e "The file ${yellow}/usr/local/opnsense/scripts/pfelk/pfelk_rule_sync.sh${normal} has been ${blue}created${normal}"
-	chmod +x /usr/local/opnsense/scripts/pfelk/pfelk_rule_sync.sh
+	FILE=/usr/local/opnsense/service/conf/actions.d/actions_filter.conf
 	# Updated file actions_filter.conf to start the script when modifying firewall rules
 	echo -e "Backup from the original file ${yellow}actions_filter.conf${normal} to ${yellow}actions_filter.conf.bak${normal}"
-	cp $FILE2 $FILE2.bak
+	cp $FILE $FILE.bak
 	echo -e "Updated file ${yellow}actions_filter.conf${normal} to integrate the pfELK script"
-	sed -i '' 's/command:\/usr\/local\/etc\/rc\.filter_configure.*/command:\/usr\/local\/etc\/rc\.filter_configure;\/usr\/local\/opnsense\/scripts\/pfelk\/pfelk_rule_sync.sh --sync/' $FILE2
+	sed -i '' 's/command:\/usr\/local\/etc\/rc\.filter_configure.*/command:\/usr\/local\/etc\/rc\.filter_configure;\/usr\/local\/opnsense\/scripts\/pfelk\/pfelk_rule_sync.sh --sync/' $FILE
 	echo -e "Restart the ${yellow}configd service${normal}"
 	service configd restart
 	echo -e "Start the ${yellow}OPNSense filter service${normal}"
 	OUTPUT=$(configctl filter reload)
 	if [ ${OUTPUT} = "OK" ]; then
-		echo -e "Everything is ${yellow}Good${normal} !"
+		echo -e "Everything is ${green}Good${normal} !"
 	else
 		echo -e "Something is ${red}Wrong${normal} !"
 	fi
