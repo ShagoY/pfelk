@@ -64,7 +64,7 @@ pfelk_update(){
 	# Updated file actions_filter.conf to start the script when modifying firewall rules
 	echo -e "Backup ${yellow}actions_filter.conf${normal} to ${yellow}actions_filter.conf.bak${normal}"
 	cp $FILE $FILE.bak
-	echo -e "Updated file ${yellow}actions_filter.conf${normal} to integrate the pfELK script"
+	echo -e "Update ${yellow}actions_filter.conf${normal} to integrate the pfELK script"
 	sed -i '' 's/command:\/usr\/local\/etc\/rc\.filter_configure.*/command:\/usr\/local\/etc\/rc\.filter_configure;\/usr\/local\/opnsense\/scripts\/pfelk\/pfelk_rule_sync.sh --sync/' $FILE
 	echo -e "Restart the ${yellow}configd service${normal}"
 	service configd restart
