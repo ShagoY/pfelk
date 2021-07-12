@@ -29,8 +29,8 @@
 ###################################################################################################################################################################################################
 #
 # MaxMind      | https://github.com/maxmind/geoipupdate/releases
-# GeoIP        | 4.6.0 
-# Elasticstack | 7.12.1
+# GeoIP        | 4.7.1
+# Elasticstack | 7.13.2
 #
 ###################################################################################################################################################################################################
 #                                                                                                                                                                                                 #
@@ -321,7 +321,7 @@ get_distro() {
 }
 get_distro
 
-if ! [[ "${os_codename}" =~ (xenial|bionic|cosmic|disco|eoan|focal|stretch|buster|bullseye|bookworm)  ]]; then
+if ! [[ "${os_codename}" =~ (xenial|bionic|cosmic|disco|eoan|focal|stretch|buster|bullseye|bookworm|hirsute)  ]]; then
   clear
   header_red
   echo -e "${WHITE_R}#${RESET} This script is not made for your OS."
@@ -550,8 +550,8 @@ port_5190_service=''
 port_5040_in_use=''
 port_5040_pid=''
 port_5040_service=''
-elk_version=7.12.1
-maxmind_version=4.6.0
+elk_version=7.13.2
+maxmind_version=4.7.1
 
 ###################################################################################################################################################################################################
 #                                                                                                                                                                                                 #
