@@ -48,6 +48,10 @@
   4. :pushpin:  References
       - [:movie_camera: YouTube Guide](https://youtu.be/KV27ouVUGuc?t=60)
 
+- ### :a::b: How to enable ILM?
+  1. Execute the command
+      - `sed -i 's/#ILM#//' /etc/pfelk/conf.d/50-outputs.conf`
+
 # :two: Dashboards 
  :triangular_flag_on_post: This step may be omited, it you installed utilzing the [pflek-installer.sh](https://raw.githubusercontent.com/pfelk/pfelk/main/etc/pfelk/scripts/pfelk-dashboard-installer.sh) script :page_with_curl:
 - ### :a: Manual Method
